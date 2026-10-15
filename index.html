@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e8eee9">
+  <title>O Grande Jogo das Palavras | Arquivo Paranormal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17241f;
+      --muted: #68776f;
+      --line: #cbd5ce;
+      --paper: #f8faf7;
+      --canvas: #e8eee9;
+      --green: #1e6d50;
+      --coral: #d86c54;
+      --mono: "DM Mono", monospace;
+      --sans: "DM Sans", sans-serif;
+      font-family: var(--sans);
+      background: var(--canvas);
+      color: var(--ink);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid #e66c43;
+      outline-offset: 3px;
+    }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .studio-shell { max-width: 1440px; margin: 0 auto; padding: 24px 34px 36px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--line); padding-bottom: 18px; }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--ink); border-radius: 50%; font-family: "Fraunces", serif; font-size: 20px; font-weight: 600; }
+    .brand-name { font-size: 13px; font-weight: 700; line-height: 1.2; }
+    .brand-kicker, .eyebrow { color: var(--muted); font: 500 10px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .top-status { display: flex; align-items: center; gap: 9px; color: #426252; font: 500 10px/1.3 var(--mono); text-transform: uppercase; }
+    .status-dot { width: 8px; height: 8px; background: #3e9668; border-radius: 50%; box-shadow: 0 0 0 3px #d3e5d9; }
+    .intro { display: flex; justify-content: space-between; align-items: end; gap: 28px; padding: 28px 0 22px; }
+    .intro h1 { max-width: 760px; margin: 6px 0 0; font: 600 clamp(25px, 3vw, 38px)/1.08 "Space Grotesk", var(--sans); letter-spacing: 0; }
+    .intro p { max-width: 390px; margin: 0; color: #506158; font-size: 13px; line-height: 1.55; }
+    .intro-label { display: inline-flex; align-items: center; gap: 8px; }
+    .intro-label::before { content: ""; width: 18px; height: 1px; background: var(--coral); }
+    .prototype-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-block: 1px solid var(--line); }
+    .prototype-tab { display: flex; gap: 13px; align-items: center; min-width: 0; padding: 15px 16px; border: 0; border-right: 1px solid var(--line); background: transparent; text-align: left; cursor: pointer; transition: background .18s ease, color .18s ease; }
+    .prototype-tab:first-child { border-left: 1px solid var(--line); }
+    .prototype-tab:hover { background: #f2f6f2; }
+    .prototype-tab[aria-pressed="true"] { background: var(--ink); color: #f5f8f4; }
+    .tab-number { color: var(--muted); font: 500 11px var(--mono); }
+    .prototype-tab[aria-pressed="true"] .tab-number { color: #b6d1c0; }
+    .tab-title { display: block; font-size: 13px; font-weight: 700; }
+    .tab-subtitle { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .prototype-tab[aria-pressed="true"] .tab-subtitle { color: #c2d0c8; }
+    .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 288px; gap: 24px; align-items: start; padding-top: 24px; }
+    .preview-column { min-width: 0; }
+    .preview-heading { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 11px; }
+    .preview-heading h2, .panel-heading h2 { margin: 0; font: 600 14px/1.2 "Space Grotesk", var(--sans); }
+    .preview-index { color: var(--muted); font: 500 10px var(--mono); }
+    .game-frame { min-height: 568px; overflow: hidden; border: 1px solid #c2cec5; background: var(--paper); box-shadow: 0 13px 35px #1b322112; }
+    .game { min-height: 568px; }
+    .game-topline { display: flex; justify-content: space-between; align-items: center; gap: 14px; min-height: 55px; padding: 0 24px; border-bottom: 1px solid var(--game-line); color: var(--game-muted); font: 500 10px var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+    .game-brand { color: var(--game-ink); font: 700 12px "Space Grotesk", var(--sans); letter-spacing: 0; text-transform: none; }
+    .game-tag { display: inline-flex; align-items: center; gap: 7px; }
+    .game-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--game-accent); }
+    .game-body { display: grid; grid-template-columns: minmax(205px, .72fr) minmax(290px, 1fr); min-height: 512px; }
+    .story-panel { position: relative; min-height: 512px; overflow: hidden; padding: 28px 25px; background: var(--story-bg); color: var(--story-ink); }
+    .story-panel::after { content: ""; position: absolute; inset: auto 0 0; height: 48%; pointer-events: none; background: linear-gradient(0deg, #101d1b80, transparent); }
+    .story-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: var(--image-opacity, .52); mix-blend-mode: var(--image-blend, normal); }
+    .story-copy { position: relative; z-index: 1; }
+    .story-kicker { display: inline-flex; align-items: center; gap: 8px; font: 500 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .story-kicker::before { content: ""; width: 18px; height: 1px; background: var(--game-accent); }
+    .story-panel h3 { max-width: 340px; margin: 45px 0 10px; font: 600 clamp(27px, 3.1vw, 41px)/1.02 var(--story-font, "Fraunces", serif); letter-spacing: 0; }
+    .story-panel p { max-width: 280px; margin: 0; color: var(--story-muted); font-size: 13px; line-height: 1.55; }
+    .story-note { position: absolute; z-index: 1; right: 22px; bottom: 22px; left: 25px; display: flex; justify-content: space-between; gap: 12px; align-items: end; color: #f7f6ec; font: 500 10px/1.4 var(--mono); }
+    .story-note strong { display: block; font: 600 12px/1.3 var(--sans); }
+    .story-stamp { display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid #ffffff8c; border-radius: 50%; transform: rotate(-9deg); }
+    .play-panel { padding: 25px clamp(20px, 3vw, 36px) 22px; background: var(--game-bg); color: var(--game-ink); }
+    .play-title-row { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+    .play-title-row h4 { margin: 3px 0 0; font: 600 19px/1.15 "Space Grotesk", var(--sans); letter-spacing: 0; }
+    .round-label { color: var(--game-muted); font: 500 10px var(--mono); text-align: right; white-space: nowrap; }
+    .play-instruction { margin: 8px 0 18px; color: var(--game-muted); font-size: 12px; line-height: 1.45; }
+    .guess-form { display: flex; gap: 8px; }
+    .guess-input { width: 100%; min-width: 0; height: 44px; padding: 0 13px; border: 1px solid var(--game-input-line); border-radius: 2px; background: var(--game-input-bg); color: var(--game-ink); font-size: 13px; }
+    .guess-input::placeholder { color: var(--game-muted); opacity: .9; }
+    .submit-button { flex: 0 0 auto; min-height: 44px; padding: 0 16px; border: 1px solid var(--game-accent); border-radius: 2px; background: var(--game-accent); color: var(--button-ink); font-size: 12px; font-weight: 700; cursor: pointer; transition: filter .18s ease, transform .18s ease; }
+    .submit-button:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .live-message { min-height: 31px; margin: 9px 0 0; color: var(--game-muted); font-size: 11px; line-height: 1.45; }
+    .result-title { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 19px 0 7px; color: var(--game-muted); font: 500 9px var(--mono); letter-spacing: .07em; text-transform: uppercase; }
+    .result-list { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+    .result-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 43px; padding: 8px 10px; border: 1px solid var(--game-line); background: var(--result-bg); }
+    .result-word { font-size: 12px; font-weight: 700; text-transform: capitalize; }
+    .result-hint { display: block; margin-top: 2px; color: var(--game-muted); font-size: 10px; font-weight: 400; }
+    .result-score { color: var(--game-ink); font: 500 10px var(--mono); text-align: right; white-space: nowrap; }
+    .score-caption { display: block; margin-top: 2px; color: var(--game-muted); font: 400 9px var(--sans); }
+    .game-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 13px; padding-top: 12px; border-top: 1px solid var(--game-line); color: var(--game-muted); font-size: 10px; }
+    .reset-button { padding: 6px 0; border: 0; background: none; color: var(--game-ink); font-size: 10px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+    .game[data-theme="radio"] {
+      --game-bg: #f0f3ec; --game-ink: #16302b; --game-muted: #667770; --game-line: #c9d4cc;
+      --game-input-line: #9caea3; --game-input-bg: #f9faf6; --result-bg: #f7f8f3;
+      --game-accent: #d4ef61; --button-ink: #17362c; --story-bg: #132a2b; --story-ink: #fbf9ed;
+      --story-muted: #e0e9dd; --image-opacity: .5; --image-blend: luminosity; --story-font: "Fraunces", serif;
+    }
+    .game[data-theme="radio"] .story-panel { background: linear-gradient(160deg, #183c3b22, #14292755), #183a39; }
+    .game[data-theme="radio"] .story-image { filter: saturate(.6); }
+    .game[data-theme="cordel"] {
+      --game-bg: #fff9ec; --game-ink: #241914; --game-muted: #765f51; --game-line: #ddcbbb;
+      --game-input-line: #947362; --game-input-bg: #fffdf7; --result-bg: #fffdf7;
+      --game-accent: #d34531; --button-ink: #fff9ed; --story-bg: #b62f27; --story-ink: #fff7e7;
+      --story-muted: #ffdfbe; --image-opacity: .25; --image-blend: multiply; --story-font: "Fraunces", serif;
+    }
+    .game[data-theme="cordel"] .game-topline { border-bottom-style: double; border-bottom-width: 3px; }
+    .game[data-theme="cordel"] .story-panel { background-color: #b63227; background-image: repeating-linear-gradient(135deg, #6f1c1b 0 1px, transparent 1px 9px); }
+    .game[data-theme="cordel"] .story-panel::before { content: "✳"; position: absolute; top: 104px; right: -18px; color: #f2bd56; font: 160px/1 "Fraunces", serif; opacity: .72; transform: rotate(-15deg); }
+    .game[data-theme="cordel"] .story-image { filter: grayscale(1) contrast(1.25); }
+    .game[data-theme="cordel"] .result-row { border-left: 4px solid var(--game-accent); }
+    .game[data-theme="campo"] {
+      --game-bg: #f5f7ee; --game-ink: #1f3025; --game-muted: #637364; --game-line: #cbd6c2;
+      --game-input-line: #91a18a; --game-input-bg: #fbfcf7; --result-bg: #fbfcf7;
+      --game-accent: #315f47; --button-ink: #f7f6e9; --story-bg: #dce9ce; --story-ink: #173426;
+      --story-muted: #334e3a; --image-opacity: .52; --image-blend: normal; --story-font: "Fraunces", serif;
+    }
+    .game[data-theme="campo"] .story-panel { background: #c6dcbb; }
+    .game[data-theme="campo"] .story-panel::after { height: 35%; background: linear-gradient(0deg, #1734269c, transparent); }
+    .game[data-theme="campo"] .story-panel h3 { max-width: 260px; }
+    .game[data-theme="campo"] .story-image { filter: saturate(.75); }
+    .specialist-panel { padding-top: 2px; }
+    .panel-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .panel-count { color: var(--muted); font: 500 10px var(--mono); }
+    .specialist-list { display: grid; gap: 9px; }
+    .specialist { padding: 13px 14px 14px; border: 1px solid var(--line); background: #f7faf7; }
+    .specialist-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .specialist-name { margin: 0; font-size: 12px; font-weight: 700; }
+    .specialist-role { color: var(--muted); font: 500 9px var(--mono); text-transform: uppercase; }
+    .specialist p { margin: 8px 0 0; color: #4c5d53; font-size: 11px; line-height: 1.5; }
+    .specialist-mark { color: var(--green); font: 500 9px var(--mono); }
+    .decision-note { margin-top: 13px; padding: 13px 14px; border-left: 3px solid #d96d52; background: #f5eee8; }
+    .decision-note strong { display: block; margin-bottom: 5px; font: 500 9px var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+    .decision-note p { margin: 0; color: #665149; font-size: 11px; line-height: 1.5; }
+    .footer-note { display: flex; justify-content: space-between; gap: 20px; padding-top: 16px; color: var(--muted); font-size: 10px; line-height: 1.45; }
+    @media (max-width: 940px) {
+      .studio-shell { padding-inline: 22px; }
+      .workspace { grid-template-columns: minmax(0, 1fr) 248px; gap: 17px; }
+      .game-body { grid-template-columns: minmax(180px, .67fr) minmax(260px, 1fr); }
+      .play-panel { padding-inline: 20px; }
+    }
+    @media (max-width: 760px) {
+      .studio-shell { padding: 16px 16px 28px; }
+      .intro { display: block; padding: 22px 0 18px; }
+      .intro p { margin-top: 10px; }
+      .workspace { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+      .game-frame, .game { min-height: auto; }
+      .game-body { grid-template-columns: minmax(0, 1fr); }
+      .story-panel { min-height: 255px; padding: 22px; }
+      .story-panel h3 { max-width: 450px; margin-top: 30px; font-size: 34px; }
+      .story-panel p { max-width: 420px; }
+      .story-note { right: 20px; bottom: 15px; left: 22px; }
+      .play-panel { padding: 22px; }
+      .specialist-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .specialist { min-height: 130px; }
+    }
+    @media (max-width: 520px) {
+      .topbar { align-items: start; }
+      .top-status { max-width: 110px; text-align: right; }
+      .brand-kicker { font-size: 9px; }
+      .intro h1 { font-size: 28px; }
+      .prototype-tabs { grid-template-columns: 1fr; }
+      .prototype-tab, .prototype-tab:first-child { border-inline: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .prototype-tab:last-child { border-bottom: 0; }
+      .tab-subtitle { display: none; }
+      .game-topline { min-height: 49px; padding-inline: 15px; }
+      .game-tag { font-size: 9px; }
+      .story-panel { min-height: 242px; padding: 19px; }
+      .story-panel h3 { max-width: 290px; font-size: 30px; }
+      .play-panel { padding: 20px 16px; }
+      .play-title-row h4 { font-size: 17px; }
+      .guess-form { gap: 6px; }
+      .submit-button { padding-inline: 11px; }
+      .specialist-list { grid-template-columns: 1fr; }
+      .specialist { min-height: auto; }
+      .footer-note { display: block; }
+      .footer-note span { display: block; margin-top: 5px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="studio-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">P</span>
+        <div><div class="brand-name">O grande jogo das palavras</div><div class="brand-kicker">Arquivo de ocorrências</div></div>
+      </div>
+      <div class="top-status"><span class="status-dot" aria-hidden="true"></span>Investigação em andamento</div>
+    </header>
+    <section class="intro" aria-labelledby="page-title">
+      <div><div class="eyebrow intro-label">Três relatos · uma ocorrência</div><h1 id="page-title">Que segredo esconde<br>esta ocorrência?</h1></div>
+      <p>Investigue palavras por significado em três registros diferentes. Alterne entre rádio, folheto e caderno de campo sem mudar a mecânica.</p>
+    </section>
+    <nav class="prototype-tabs" aria-label="Selecionar protótipo">
+      <button class="prototype-tab" type="button" data-prototype="radio" aria-pressed="true"><span class="tab-number">01</span><span><span class="tab-title">Frequência anômala</span><span class="tab-subtitle">Rádio interceptado · imersivo</span></span></button>
+      <button class="prototype-tab" type="button" data-prototype="cordel" aria-pressed="false"><span class="tab-number">02</span><span><span class="tab-title">O folheto interditado</span><span class="tab-subtitle">Relato popular · expressivo</span></span></button>
+      <button class="prototype-tab" type="button" data-prototype="campo" aria-pressed="false"><span class="tab-number">03</span><span><span class="tab-title">Caderno da ocorrência</span><span class="tab-subtitle">Arquivo de campo · contemplativo</span></span></button>
+    </nav>
+    <div class="workspace">
+      <section class="preview-column" aria-labelledby="preview-title">
+        <div class="preview-heading"><h2 id="preview-title">Protótipo navegável</h2><span class="preview-index" id="prototype-index">DIREÇÃO 01 / 03</span></div>
+        <div class="game-frame" id="game-preview"></div>
+      </section>
+      <aside class="specialist-panel" aria-labelledby="panel-title">
+        <div class="panel-heading"><h2 id="panel-title">Painel de especialistas</h2><span class="panel-count">03 PERSPECTIVAS</span></div>
+        <div class="specialist-list">
+          <article class="specialist"><div class="specialist-top"><h3 class="specialist-name">Núcleo de UX</h3><span class="specialist-mark">FLUXO</span></div><p>Palpite sempre à vista, retorno no mesmo lugar e nova tentativa sem etapa intermediária.</p></article>
+          <article class="specialist"><div class="specialist-top"><h3 class="specialist-name">Acessibilidade web</h3><span class="specialist-mark">WCAG</span></div><p>Estado descrito em texto, foco de teclado evidente e anúncio cortês dos novos palpites.</p></article>
+          <article class="specialist"><div class="specialist-top"><h3 class="specialist-name">Design visual</h3><span class="specialist-mark">DIREÇÃO</span></div><p id="visual-review">Luz de estúdio, tensão noturna e sinais claros de transmissão.</p></article>
+        </div>
+        <div class="decision-note"><strong>Regra ainda em aberto</strong><p>As afinidades são ilustrativas. O método real de feedback semântico ainda precisa ser escolhido.</p></div>
+      </aside>
+    </div>
+    <footer class="footer-note"><span>Protótipo de fluxo e direção visual. As palavras e pontuações são exemplos, não um modelo semântico real.</span><span>Progresso de demonstração salvo somente neste navegador.</span></footer>
+  </main>
+  <script>
+    const prototypes = {
+      radio: {
+        number: "DIREÇÃO 01 / 03", name: "Frequência anômala", theme: "radio",
+        image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=900&q=85",
+        imageAlt: "Equipamentos de áudio em um estúdio pouco iluminado.", kicker: "Interceptação 04 · 00:17",
+        storyTitle: "Alguém responde do outro lado.", storyText: "A equipe perdeu contato com a base. Identifique a palavra que se repete na gravação.",
+        storyFooter: "ARQUIVO DE ÁUDIO 04", storyStamp: "SINAL 02", gameTitle: "Analise a transmissão",
+        instruction: "Digite uma palavra ligada à gravação. Cada retorno indica uma relação com o fenômeno.",
+        review: "Ruído no sinal, registro de emergência e tensão de investigação sem esconder a ação.",
+        examples: [["mar", "A costa aparece no mesmo relato.", "81%", "afinidade"], ["luz", "A equipe marcou esse indício.", "74%", "afinidade"], ["noite", "O horário combina, o fenômeno ainda não.", "58%", "afinidade"]]
+      },
+      cordel: {
+        number: "DIREÇÃO 02 / 03", name: "O folheto interditado", theme: "cordel",
+        image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=900&q=85",
+        imageAlt: "Materiais de desenho e impressão sobre uma mesa de trabalho.", kicker: "Relato 01 · trecho censurado",
+        storyTitle: "O folheto descreve o impossível.", storyText: "Um relato popular foi encontrado com uma palavra apagada. Descubra o que a testemunha tentou registrar.",
+        storyFooter: "ANEXO DE OCORRÊNCIA", storyStamp: "ANEXO 07", gameTitle: "Decifre o relato",
+        instruction: "Que palavra se aproxima do fenômeno descrito? Cada palpite ajuda a reconstruir o registro.",
+        review: "Textura de impressão e tradição oral convertidas em pista de investigação, sem copiar marcas ou obras existentes.",
+        examples: [["barco", "Uma relação com a jornada, ainda distante.", "52%", "relação"], ["farol", "A palavra identificada no registro.", "100%", "resposta"], ["mar", "O local aparece no mesmo relato.", "81%", "relação"]]
+      },
+      campo: {
+        number: "DIREÇÃO 03 / 03", name: "Caderno da ocorrência", theme: "campo",
+        image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=900&q=85",
+        imageAlt: "Luz atravessando uma trilha em uma área de mata.", kicker: "Campo 12 · zona de mata",
+        storyTitle: "A mata guarda um vestígio.", storyText: "A equipe encontrou anotações interrompidas no meio de uma frase. Reconstitua a palavra que falta.",
+        storyFooter: "CADERNO DE CAMPO", storyStamp: "EVIDÊNCIA", gameTitle: "Registre uma hipótese",
+        instruction: "Digite uma palavra relacionada ao vestígio. O caderno organiza cada associação.",
+        review: "Página de evidências clara e organizada, com textura de arquivo sem competir com a leitura.",
+        examples: [["trilha", "Um indício geográfico no mesmo caso.", "67%", "associação"], ["sinal", "O indício mais forte até agora.", "63%", "associação"], ["mapa", "Uma relação com a investigação.", "39%", "associação"]]
+      }
+    };
+    const mockScores = {
+      farol: ["100%", "Você encontrou a palavra desta demonstração."], mar: ["81%", "A paisagem está no mesmo horizonte."],
+      luz: ["74%", "Você se aproximou do sinal."], noite: ["58%", "Uma associação mais distante."],
+      praia: ["67%", "Uma observação próxima do cenário."], barco: ["52%", "Relação com a cena, ainda distante."],
+      trilha: ["67%", "Um indício geográfico no mesmo caso."],
+      sinal: ["63%", "Você se aproximou da ideia."], mapa: ["39%", "Uma relação mais distante."]
+    };
+    const prototypeIndex = document.querySelector("#prototype-index");
+    const gamePreview = document.querySelector("#game-preview");
+    const visualReview = document.querySelector("#visual-review");
+    const tabs = [...document.querySelectorAll(".prototype-tab")];
+    let activePrototype = "radio";
+
+    function getSavedGuesses(theme) {
+      try {
+        const saved = JSON.parse(localStorage.getItem(`palavras-prototipo-${theme}`) || "[]");
+        return Array.isArray(saved) ? saved.slice(-8) : [];
+      } catch { return []; }
+    }
+    function saveGuesses(theme, guesses) {
+      try { localStorage.setItem(`palavras-prototipo-${theme}`, JSON.stringify(guesses.slice(-8))); }
+      catch { document.querySelector("#game-status").textContent = "Não foi possível salvar; você ainda pode continuar jogando."; }
+    }
+    function renderPrototype(theme) {
+      activePrototype = theme;
+      const data = prototypes[theme];
+      tabs.forEach((tab) => tab.setAttribute("aria-pressed", String(tab.dataset.prototype === theme)));
+      prototypeIndex.textContent = data.number;
+      visualReview.textContent = data.review;
+      const savedGuesses = getSavedGuesses(theme);
+      const exampleRows = data.examples.map(([word, hint, score, caption]) => `
+        <li class="result-row"><span><span class="result-word">${word}</span><span class="result-hint">${hint}</span></span>
+        <span class="result-score">${score}<span class="score-caption">${caption}</span></span></li>`).join("");
+      gamePreview.innerHTML = `
+        <section class="game" data-theme="${theme}" aria-label="${data.name}">
+          <header class="game-topline"><span class="game-brand">${data.name}</span><span class="game-tag">Partidas ilimitadas</span></header>
+          <div class="game-body">
+            <section class="story-panel" aria-label="Contexto narrativo">
+              <img class="story-image" src="${data.image}" alt="${data.imageAlt}" loading="lazy">
+              <div class="story-copy"><span class="story-kicker">${data.kicker}</span><h3>${data.storyTitle}</h3><p>${data.storyText}</p></div>
+              <div class="story-note"><span><strong>${data.storyFooter}</strong>Uma história em descoberta</span><span class="story-stamp" aria-hidden="true">${data.storyStamp}</span></div>
+            </section>
+            <section class="play-panel" aria-labelledby="game-title">
+              <div class="play-title-row"><h4 id="game-title">${data.gameTitle}</h4><span class="round-label">SEM LIMITE<br>DE RODADAS</span></div>
+              <p class="play-instruction">${data.instruction}</p>
+              <form class="guess-form" id="guess-form"><label class="sr-only" for="guess-input">Seu palpite</label>
+                <input class="guess-input" id="guess-input" name="palpite" type="text" maxlength="32" autocomplete="off" spellcheck="false" placeholder="Digite uma palavra...">
+                <button class="submit-button" type="submit">Enviar</button>
+              </form>
+              <p class="live-message" id="game-status" role="status" aria-live="polite">Exemplos demonstrativos abaixo. Experimente enviar uma palavra.</p>
+              <div class="result-title"><span>Retornos de exemplo</span><span>DEMONSTRAÇÃO</span></div>
+              <ul class="result-list" aria-label="Exemplos de retorno semântico">${exampleRows}</ul>
+              <div class="result-title"><span>Seus palpites</span><span id="guess-count">${savedGuesses.length} SALVOS</span></div>
+              <ul class="result-list" id="user-guesses" aria-label="Seus palpites anteriores"></ul>
+              <div class="game-footer"><span>Salvo neste dispositivo</span><button class="reset-button" id="reset-session" type="button">Limpar palpites</button></div>
+            </section>
+          </div>
+        </section>`;
+      savedGuesses.forEach(addGuessRow);
+      document.querySelector("#guess-form").addEventListener("submit", submitGuess);
+      document.querySelector("#reset-session").addEventListener("click", resetSession);
+    }
+    function normalizeGuess(value) {
+      return value.trim().toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    function addGuessRow(guess) {
+      const list = document.querySelector("#user-guesses");
+      if (!list) return;
+      const item = document.createElement("li");
+      item.className = "result-row";
+      const word = document.createElement("span");
+      const name = document.createElement("span");
+      name.className = "result-word";
+      name.textContent = guess.word;
+      const hint = document.createElement("span");
+      hint.className = "result-hint";
+      hint.textContent = guess.hint;
+      word.append(name, hint);
+      const score = document.createElement("span");
+      score.className = "result-score";
+      score.textContent = guess.score;
+      const caption = document.createElement("span");
+      caption.className = "score-caption";
+      caption.textContent = guess.caption;
+      score.append(caption);
+      item.append(word, score);
+      list.prepend(item);
+    }
+    function submitGuess(event) {
+      event.preventDefault();
+      const input = document.querySelector("#guess-input");
+      const status = document.querySelector("#game-status");
+      const word = input.value.trim();
+      const normalized = normalizeGuess(word);
+      if (!normalized) {
+        status.textContent = "Digite uma palavra antes de enviar.";
+        input.focus();
+        return;
+      }
+      const guesses = getSavedGuesses(activePrototype);
+      if (guesses.some((guess) => normalizeGuess(guess.word) === normalized)) {
+        status.textContent = "Essa palavra já está nos seus palpites.";
+        input.select();
+        return;
+      }
+      const result = mockScores[normalized];
+      const guess = result
+        ? { word, hint: result[1], score: result[0], caption: "afinidade ilustrativa" }
+        : { word, hint: "Palpite registrado; sem cálculo semântico nesta demonstração.", score: "—", caption: "sem avaliação" };
+      guesses.push(guess);
+      saveGuesses(activePrototype, guesses);
+      addGuessRow(guess);
+      document.querySelector("#guess-count").textContent = `${guesses.length} SALVOS`;
+      status.textContent = result ? `${word}: ${result[0]} de afinidade ilustrativa. ${result[1]}` : `${word} foi registrado. A proximidade real depende do modelo semântico, ainda em aberto.`;
+      input.value = "";
+      input.focus();
+    }
+    function resetSession() {
+      try { localStorage.removeItem(`palavras-prototipo-${activePrototype}`); } catch {}
+      renderPrototype(activePrototype);
+      document.querySelector("#game-status").textContent = "Palpites locais removidos. Você pode começar de novo.";
+      document.querySelector("#guess-input").focus();
+    }
+    tabs.forEach((tab) => tab.addEventListener("click", () => renderPrototype(tab.dataset.prototype)));
+    renderPrototype(activePrototype);
+  </script>
+</body>
+</html>
