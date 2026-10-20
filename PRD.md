@@ -6,7 +6,7 @@
 
 ## 1. Resumo
 
-Jogo casual de adivinhação semântica em português brasileiro, ambientado em investigações de ocorrências paranormais. A atmosfera toma Ordem Paranormal como referência solicitada, mas o universo, os casos e os textos serão originais e não canônicos. A pessoa digita palavras relacionadas a uma resposta secreta, recebe pistas sobre a relação de significado e pode iniciar partidas sem esperar por uma rodada diária. Registros de rádio, relatos impressos e cadernos de campo dão identidade às partidas.
+Jogo casual de adivinhação semântica em português brasileiro, ambientado em investigações de ocorrências paranormais. A atmosfera toma Ordem Paranormal como referência solicitada, mas o universo, os casos e os textos serão originais e não canônicos. A pessoa digita palavras relacionadas a uma resposta secreta, recebe pistas sobre a relação de significado e pode iniciar partidas sem esperar por uma rodada diária. Registros de rádio, relatos impressos e cadernos de campo dão identidade às partidas. 
 
 O primeiro lançamento será uma experiência web responsiva, gratuita, sem anúncios e sem conta. O progresso será salvo localmente no dispositivo. O mecanismo de similaridade, as regras de cada rodada e a forma da narrativa continuam pendentes de decisão; os percentuais exibidos nos mockups não representam comportamento de produto.
 
