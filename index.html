@@ -99,6 +99,10 @@
     .score-caption { display: block; margin-top: 2px; color: var(--game-muted); font: 400 9px var(--sans); }
     .game-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 13px; padding-top: 12px; border-top: 1px solid var(--game-line); color: var(--game-muted); font-size: 10px; }
     .reset-button { padding: 6px 0; border: 0; background: none; color: var(--game-ink); font-size: 10px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+    .game-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .game-actions button { min-height: 36px; padding: 0 11px; border: 1px solid var(--game-input-line); border-radius: 2px; background: var(--game-input-bg); color: var(--game-ink); font-size: 11px; font-weight: 600; cursor: pointer; }
+    .game-actions button:hover { background: var(--result-bg); }
+    .guess-form :disabled, .game-actions button:disabled { cursor: not-allowed; opacity: .6; }
     .game[data-theme="radio"] {
       --game-bg: #f0f3ec; --game-ink: #16302b; --game-muted: #667770; --game-line: #c9d4cc;
       --game-input-line: #9caea3; --game-input-bg: #f9faf6; --result-bg: #f7f8f3;
@@ -210,7 +214,7 @@
     </nav>
     <div class="workspace">
       <section class="preview-column" aria-labelledby="preview-title">
-        <div class="preview-heading"><h2 id="preview-title">Protótipo navegável</h2><span class="preview-index" id="prototype-index">DIREÇÃO 01 / 03</span></div>
+        <div class="preview-heading"><h2 id="preview-title">Jogue agora</h2><span class="preview-index" id="prototype-index">DIREÇÃO 01 / 03</span></div>
         <div class="game-frame" id="game-preview"></div>
       </section>
       <aside class="specialist-panel" aria-labelledby="panel-title">
@@ -220,10 +224,10 @@
           <article class="specialist"><div class="specialist-top"><h3 class="specialist-name">Acessibilidade web</h3><span class="specialist-mark">WCAG</span></div><p>Estado descrito em texto, foco de teclado evidente e anúncio cortês dos novos palpites.</p></article>
           <article class="specialist"><div class="specialist-top"><h3 class="specialist-name">Design visual</h3><span class="specialist-mark">DIREÇÃO</span></div><p id="visual-review">Luz de estúdio, tensão noturna e sinais claros de transmissão.</p></article>
         </div>
-        <div class="decision-note"><strong>Regra ainda em aberto</strong><p>As afinidades são ilustrativas. O método real de feedback semântico ainda precisa ser escolhido.</p></div>
+        <div class="decision-note"><strong>Como funcionam as pistas</strong><p>As relações foram escritas para estas rodadas; palpites sem pista cadastrada também podem ser tentados. Não há cálculo semântico automático.</p></div>
       </aside>
     </div>
-    <footer class="footer-note"><span>Protótipo de fluxo e direção visual. As palavras e pontuações são exemplos, não um modelo semântico real.</span><span>Progresso de demonstração salvo somente neste navegador.</span></footer>
+    <footer class="footer-note"><span>Jogo de palavras com rodadas ilimitadas e pistas editoriais em português.</span><span>O progresso fica salvo neste navegador, sem conta.</span></footer>
   </main>
   <script>
     const prototypes = {
@@ -235,7 +239,11 @@
         storyFooter: "ARQUIVO DE ÁUDIO 04", storyStamp: "SINAL 02", gameTitle: "Analise a transmissão",
         instruction: "Digite uma palavra ligada à gravação. Cada retorno indica uma relação com o fenômeno.",
         review: "Ruído no sinal, registro de emergência e tensão de investigação sem esconder a ação.",
-        examples: [["mar", "A costa aparece no mesmo relato.", "81%", "afinidade"], ["luz", "A equipe marcou esse indício.", "74%", "afinidade"], ["noite", "O horário combina, o fenômeno ainda não.", "58%", "afinidade"]]
+        rounds: [
+          { answer: "farol", hints: ["A resposta é uma estrutura construída na costa.", "Ela ajuda embarcações durante a noite.", "Começa com F e tem cinco letras."], clues: { mar: "A costa aparece no mesmo relato.", luz: "A equipe marcou esse indício luminoso.", noite: "O horário combina com o sinal.", praia: "O cenário fica perto da água.", barco: "Uma embarcação procura este sinal." } },
+          { answer: "eco", hints: ["A resposta é um fenômeno que pode ser ouvido.", "O som retorna depois de encontrar uma superfície.", "Começa com E e tem três letras."], clues: { som: "A gravação registra uma repetição sonora.", grito: "O som forte volta pelo ambiente.", montanha: "O relevo pode devolver o som.", caverna: "O espaço fechado favorece a repetição." } },
+          { answer: "voz", hints: ["A resposta é algo que a equipe ouviu.", "Ela pode ser reconhecida mesmo pelo rádio.", "Começa com V e tem três letras."], clues: { radio: "O aparelho captou uma transmissão.", pessoa: "É produzida por alguém.", som: "A gravação guarda este tipo de sinal.", telefone: "O contato também pode acontecer por esse aparelho." } }
+        ]
       },
       cordel: {
         number: "DIREÇÃO 02 / 03", name: "O folheto interditado", theme: "cordel",
@@ -245,7 +253,11 @@
         storyFooter: "ANEXO DE OCORRÊNCIA", storyStamp: "ANEXO 07", gameTitle: "Decifre o relato",
         instruction: "Que palavra se aproxima do fenômeno descrito? Cada palpite ajuda a reconstruir o registro.",
         review: "Textura de impressão e tradição oral convertidas em pista de investigação, sem copiar marcas ou obras existentes.",
-        examples: [["barco", "Uma relação com a jornada, ainda distante.", "52%", "relação"], ["farol", "A palavra identificada no registro.", "100%", "resposta"], ["mar", "O local aparece no mesmo relato.", "81%", "relação"]]
+        rounds: [
+          { answer: "farol", hints: ["A resposta é uma estrutura construída na costa.", "Ela ajuda embarcações durante a noite.", "Começa com F e tem cinco letras."], clues: { mar: "O local aparece no mesmo relato.", luz: "A equipe marcou esse indício luminoso.", barco: "Uma embarcação procura este sinal.", noite: "O horário combina com o relato." } },
+          { answer: "assombração", hints: ["A resposta é uma presença que aparece em histórias de mistério.", "Muitas pessoas a associam a uma casa antiga.", "Começa com A e é uma aparição sobrenatural."], clues: { fantasma: "É uma figura muito associada ao relato.", medo: "A testemunha descreveu essa sensação.", casa: "O local aparece em muitas histórias assim.", noite: "O horário combina com o relato." } },
+          { answer: "promessa", hints: ["A resposta é um compromisso feito por alguém.", "Pode ser cumprida ou quebrada.", "Começa com P e tem oito letras."], clues: { palavra: "Uma declaração pode assumir essa forma.", juramento: "É um compromisso feito em voz alta.", futuro: "É quando se espera que seja cumprida.", esperança: "Uma expectativa positiva pode acompanhar isso." } }
+        ]
       },
       campo: {
         number: "DIREÇÃO 03 / 03", name: "Caderno da ocorrência", theme: "campo",
@@ -255,31 +267,49 @@
         storyFooter: "CADERNO DE CAMPO", storyStamp: "EVIDÊNCIA", gameTitle: "Registre uma hipótese",
         instruction: "Digite uma palavra relacionada ao vestígio. O caderno organiza cada associação.",
         review: "Página de evidências clara e organizada, com textura de arquivo sem competir com a leitura.",
-        examples: [["trilha", "Um indício geográfico no mesmo caso.", "67%", "associação"], ["sinal", "O indício mais forte até agora.", "63%", "associação"], ["mapa", "Uma relação com a investigação.", "39%", "associação"]]
+        rounds: [
+          { answer: "trilha", hints: ["A resposta indica um caminho em meio à natureza.", "A equipe a seguiu para atravessar a mata.", "Começa com T e tem seis letras."], clues: { mata: "O caminho atravessa essa área.", mapa: "O registro mostra o percurso.", caminho: "É um tipo de passagem.", floresta: "O cenário em que a equipe encontrou o vestígio." } },
+          { answer: "pegadas", hints: ["A resposta é uma marca deixada no chão.", "Ela pode indicar que alguém ou algum animal passou.", "Começa com P e tem sete letras."], clues: { rastro: "É uma marca que ajuda a seguir um percurso.", pé: "Uma pessoa pode deixar essa marca ao caminhar.", animal: "A equipe não sabe quem deixou o vestígio.", terra: "O solo preservou a marca." } },
+          { answer: "acampamento", hints: ["A resposta é um lugar temporário para passar a noite ao ar livre.", "A equipe montou barracas nesse local.", "Começa com A e tem onze letras."], clues: { barraca: "Um abrigo comum nesse local.", fogueira: "Pode ser acesa durante a noite.", mata: "O local foi montado nessa região.", noite: "É comum passar este período ao ar livre." } }
+        ]
       }
-    };
-    const mockScores = {
-      farol: ["100%", "Você encontrou a palavra desta demonstração."], mar: ["81%", "A paisagem está no mesmo horizonte."],
-      luz: ["74%", "Você se aproximou do sinal."], noite: ["58%", "Uma associação mais distante."],
-      praia: ["67%", "Uma observação próxima do cenário."], barco: ["52%", "Relação com a cena, ainda distante."],
-      trilha: ["67%", "Um indício geográfico no mesmo caso."],
-      sinal: ["63%", "Você se aproximou da ideia."], mapa: ["39%", "Uma relação mais distante."]
     };
     const prototypeIndex = document.querySelector("#prototype-index");
     const gamePreview = document.querySelector("#game-preview");
     const visualReview = document.querySelector("#visual-review");
     const tabs = [...document.querySelectorAll(".prototype-tab")];
     let activePrototype = "radio";
+    const gameStates = {};
+    let storageWarning = false;
 
-    function getSavedGuesses(theme) {
-      try {
-        const saved = JSON.parse(localStorage.getItem(`palavras-prototipo-${theme}`) || "[]");
-        return Array.isArray(saved) ? saved.slice(-8) : [];
-      } catch { return []; }
+    function storageKey(theme) {
+      return `grande-jogo-palavras-${theme}`;
     }
-    function saveGuesses(theme, guesses) {
-      try { localStorage.setItem(`palavras-prototipo-${theme}`, JSON.stringify(guesses.slice(-8))); }
-      catch { document.querySelector("#game-status").textContent = "Não foi possível salvar; você ainda pode continuar jogando."; }
+    function getSavedState(theme) {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey(theme)) || "null");
+        if (!saved || typeof saved !== "object") return { roundIndex: 0, guesses: [], wins: 0, hintIndex: 0, won: false, revealed: false };
+        return {
+          roundIndex: Number.isInteger(saved.roundIndex) ? Math.abs(saved.roundIndex) % prototypes[theme].rounds.length : 0,
+          guesses: Array.isArray(saved.guesses) ? saved.guesses.filter((guess) => guess && typeof guess.word === "string" && typeof guess.hint === "string" && typeof guess.caption === "string") : [],
+          wins: Number.isInteger(saved.wins) && saved.wins >= 0 ? saved.wins : 0,
+          hintIndex: Number.isInteger(saved.hintIndex) && saved.hintIndex >= 0 ? saved.hintIndex : 0,
+          won: saved.won === true,
+          revealed: saved.revealed === true
+        };
+      } catch {
+        storageWarning = true;
+        return { roundIndex: 0, guesses: [], wins: 0, hintIndex: 0, won: false, revealed: false };
+      }
+    }
+    function saveState(theme) {
+      try {
+        localStorage.setItem(storageKey(theme), JSON.stringify(gameStates[theme]));
+        return true;
+      } catch {
+        storageWarning = true;
+        return false;
+      }
     }
     function renderPrototype(theme) {
       activePrototype = theme;
@@ -287,10 +317,9 @@
       tabs.forEach((tab) => tab.setAttribute("aria-pressed", String(tab.dataset.prototype === theme)));
       prototypeIndex.textContent = data.number;
       visualReview.textContent = data.review;
-      const savedGuesses = getSavedGuesses(theme);
-      const exampleRows = data.examples.map(([word, hint, score, caption]) => `
-        <li class="result-row"><span><span class="result-word">${word}</span><span class="result-hint">${hint}</span></span>
-        <span class="result-score">${score}<span class="score-caption">${caption}</span></span></li>`).join("");
+      gameStates[theme] ??= getSavedState(theme);
+      const state = gameStates[theme];
+      const round = data.rounds[state.roundIndex];
       gamePreview.innerHTML = `
         <section class="game" data-theme="${theme}" aria-label="${data.name}">
           <header class="game-topline"><span class="game-brand">${data.name}</span><span class="game-tag">Partidas ilimitadas</span></header>
@@ -302,23 +331,38 @@
             </section>
             <section class="play-panel" aria-labelledby="game-title">
               <div class="play-title-row"><h4 id="game-title">${data.gameTitle}</h4><span class="round-label">SEM LIMITE<br>DE RODADAS</span></div>
-              <p class="play-instruction">${data.instruction}</p>
+              <p class="play-instruction">${data.instruction} A resposta tem ${round.answer.length} letras.</p>
               <form class="guess-form" id="guess-form"><label class="sr-only" for="guess-input">Seu palpite</label>
                 <input class="guess-input" id="guess-input" name="palpite" type="text" maxlength="32" autocomplete="off" spellcheck="false" placeholder="Digite uma palavra...">
                 <button class="submit-button" type="submit">Enviar</button>
               </form>
-              <p class="live-message" id="game-status" role="status" aria-live="polite">Exemplos demonstrativos abaixo. Experimente enviar uma palavra.</p>
-              <div class="result-title"><span>Retornos de exemplo</span><span>DEMONSTRAÇÃO</span></div>
-              <ul class="result-list" aria-label="Exemplos de retorno semântico">${exampleRows}</ul>
-              <div class="result-title"><span>Seus palpites</span><span id="guess-count">${savedGuesses.length} SALVOS</span></div>
+              <div class="game-actions"><button id="hint-button" type="button">Pedir pista</button><button id="answer-button" type="button">Revelar resposta</button></div>
+              <p class="live-message" id="game-status" role="status" aria-live="polite"></p>
+              <div class="result-title"><span>Palpites desta rodada</span><span id="guess-count">${state.guesses.length} PALPITES</span></div>
               <ul class="result-list" id="user-guesses" aria-label="Seus palpites anteriores"></ul>
-              <div class="game-footer"><span>Salvo neste dispositivo</span><button class="reset-button" id="reset-session" type="button">Limpar palpites</button></div>
+              <div class="game-footer"><span id="wins-count">${state.wins} ${state.wins === 1 ? "rodada vencida" : "rodadas vencidas"}</span><button class="reset-button" id="reset-session" type="button">Apagar progresso</button></div>
+              <div class="game-actions"><button id="next-round" type="button">Nova rodada</button></div>
             </section>
           </div>
         </section>`;
-      savedGuesses.forEach(addGuessRow);
+      state.guesses.forEach(addGuessRow);
+      const status = document.querySelector("#game-status");
+      if (state.won) {
+        status.textContent = `Resposta encontrada: ${round.answer}. Comece uma nova rodada quando quiser.`;
+        setRoundComplete(true);
+      } else if (state.revealed) {
+        status.textContent = `Resposta revelada: ${round.answer}. Comece uma nova rodada quando quiser.`;
+        setRoundComplete(true);
+      } else if (storageWarning) {
+        status.textContent = "O armazenamento local não está disponível. Você pode jogar, mas o progresso não será salvo.";
+      } else {
+        status.textContent = "Adivinhe a palavra secreta. As pistas de associação são preparadas para cada rodada.";
+      }
       document.querySelector("#guess-form").addEventListener("submit", submitGuess);
       document.querySelector("#reset-session").addEventListener("click", resetSession);
+      document.querySelector("#hint-button").addEventListener("click", revealHint);
+      document.querySelector("#answer-button").addEventListener("click", revealAnswer);
+      document.querySelector("#next-round").addEventListener("click", nextRound);
     }
     function normalizeGuess(value) {
       return value.trim().toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -338,11 +382,7 @@
       word.append(name, hint);
       const score = document.createElement("span");
       score.className = "result-score";
-      score.textContent = guess.score;
-      const caption = document.createElement("span");
-      caption.className = "score-caption";
-      caption.textContent = guess.caption;
-      score.append(caption);
+      score.textContent = guess.caption;
       item.append(word, score);
       list.prepend(item);
     }
@@ -357,28 +397,90 @@
         input.focus();
         return;
       }
-      const guesses = getSavedGuesses(activePrototype);
-      if (guesses.some((guess) => normalizeGuess(guess.word) === normalized)) {
+      if (!/^[\p{L}]+(?:[-'][\p{L}]+)*$/u.test(word)) {
+        status.textContent = "Use apenas uma palavra, sem espaços ou números.";
+        input.focus();
+        return;
+      }
+      const state = gameStates[activePrototype];
+      if (state.guesses.some((guess) => normalizeGuess(guess.word) === normalized)) {
         status.textContent = "Essa palavra já está nos seus palpites.";
         input.select();
         return;
       }
-      const result = mockScores[normalized];
-      const guess = result
-        ? { word, hint: result[1], score: result[0], caption: "afinidade ilustrativa" }
-        : { word, hint: "Palpite registrado; sem cálculo semântico nesta demonstração.", score: "—", caption: "sem avaliação" };
-      guesses.push(guess);
-      saveGuesses(activePrototype, guesses);
+      const round = prototypes[activePrototype].rounds[state.roundIndex];
+      const isCorrect = normalized === normalizeGuess(round.answer);
+      const clue = round.clues[normalized];
+      const guess = {
+        word,
+        hint: isCorrect ? "Você encontrou a palavra secreta!" : clue || "Ainda não há uma pista editorial para esta palavra.",
+        caption: isCorrect ? "ACERTO" : clue ? "PISTA" : "SEM PISTA"
+      };
+      state.guesses.push(guess);
+      if (isCorrect) {
+        state.won = true;
+        state.wins += 1;
+      }
+      const saved = saveState(activePrototype);
       addGuessRow(guess);
-      document.querySelector("#guess-count").textContent = `${guesses.length} SALVOS`;
-      status.textContent = result ? `${word}: ${result[0]} de afinidade ilustrativa. ${result[1]}` : `${word} foi registrado. A proximidade real depende do modelo semântico, ainda em aberto.`;
+      document.querySelector("#guess-count").textContent = `${state.guesses.length} PALPITES`;
+      if (isCorrect) document.querySelector("#wins-count").textContent = `${state.wins} ${state.wins === 1 ? "rodada vencida" : "rodadas vencidas"}`;
+      status.textContent = isCorrect
+        ? `Acertou: ${round.answer}! ${state.wins} ${state.wins === 1 ? "rodada vencida" : "rodadas vencidas"}.${saved ? "" : " O progresso não pôde ser salvo neste navegador."}`
+        : clue
+          ? `${word}: ${clue}${saved ? "" : " O progresso não pôde ser salvo neste navegador."}`
+          : `${word} foi registrado, mas ainda não há uma pista editorial para esse palpite.${saved ? "" : " O progresso não pôde ser salvo neste navegador."}`;
       input.value = "";
+      if (isCorrect) setRoundComplete(true);
       input.focus();
     }
-    function resetSession() {
-      try { localStorage.removeItem(`palavras-prototipo-${activePrototype}`); } catch {}
+    function setRoundComplete(completed) {
+      document.querySelector("#guess-input").disabled = completed;
+      document.querySelector(".submit-button").disabled = completed;
+      document.querySelector("#hint-button").disabled = completed;
+      document.querySelector("#answer-button").disabled = completed;
+    }
+    function revealHint() {
+      const state = gameStates[activePrototype];
+      const round = prototypes[activePrototype].rounds[state.roundIndex];
+      if (state.won || state.revealed) return;
+      if (state.hintIndex >= round.hints.length) {
+        document.querySelector("#game-status").textContent = "Você já usou todas as pistas desta rodada.";
+        return;
+      }
+      const hint = round.hints[state.hintIndex];
+      state.hintIndex += 1;
+      const saved = saveState(activePrototype);
+      document.querySelector("#game-status").textContent = `Pista ${state.hintIndex} de ${round.hints.length}: ${hint}${saved ? "" : " O progresso não pôde ser salvo neste navegador."}`;
+    }
+    function revealAnswer() {
+      const state = gameStates[activePrototype];
+      const round = prototypes[activePrototype].rounds[state.roundIndex];
+      if (state.won || state.revealed || !window.confirm("Revelar a resposta encerra esta rodada. Quer continuar?")) return;
+      state.revealed = true;
+      const saved = saveState(activePrototype);
+      document.querySelector("#game-status").textContent = `A resposta era ${round.answer}. Comece uma nova rodada quando quiser.${saved ? "" : " O progresso não pôde ser salvo neste navegador."}`;
+      setRoundComplete(true);
+    }
+    function nextRound() {
+      const state = gameStates[activePrototype];
+      if (!state.won && !state.revealed && state.guesses.length && !window.confirm("Começar outra rodada? Os palpites desta rodada serão apagados.")) return;
+      state.roundIndex = (state.roundIndex + 1) % prototypes[activePrototype].rounds.length;
+      state.guesses = [];
+      state.hintIndex = 0;
+      state.won = false;
+      state.revealed = false;
+      const saved = saveState(activePrototype);
       renderPrototype(activePrototype);
-      document.querySelector("#game-status").textContent = "Palpites locais removidos. Você pode começar de novo.";
+      document.querySelector("#game-status").textContent = `Nova rodada iniciada.${saved ? "" : " O progresso não pôde ser salvo neste navegador."}`;
+      document.querySelector("#guess-input").focus();
+    }
+    function resetSession() {
+      if (!window.confirm("Apagar o progresso e as vitórias desta direção neste dispositivo?")) return;
+      gameStates[activePrototype] = { roundIndex: 0, guesses: [], wins: 0, hintIndex: 0, won: false, revealed: false };
+      const saved = saveState(activePrototype);
+      renderPrototype(activePrototype);
+      document.querySelector("#game-status").textContent = `Progresso apagado.${saved ? "" : " Não foi possível salvar essa alteração neste navegador."}`;
       document.querySelector("#guess-input").focus();
     }
     tabs.forEach((tab) => tab.addEventListener("click", () => renderPrototype(tab.dataset.prototype)));
